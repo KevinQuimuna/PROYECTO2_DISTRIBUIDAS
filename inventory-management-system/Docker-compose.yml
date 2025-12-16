@@ -1,0 +1,159 @@
+version: '3.8'
+
+services:
+  # ==========================================
+  # 1. PRODUCT SERVICE (DB + APP)
+  # ==========================================
+  product-db:
+    image: mysql:8.0
+    container_name: product-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: product_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - product_db_data:/var/lib/mysql
+    networks:
+      - inventory-network
+
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://product-db:3306/product_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+    depends_on:
+      - product-db
+    networks:
+      - inventory-network
+
+  # ==========================================
+  # 2. SUPPLIER SERVICE (DB + APP)
+  # ==========================================
+  supplier-db:
+    image: mysql:8.0
+    container_name: supplier-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: supplier_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    volumes:
+      - supplier_db_data:/var/lib/mysql
+    networks:
+      - inventory-network
+
+  supplier-service:
+    build: ./supplier-service
+    container_name: supplier-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://supplier-db:3306/supplier_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+    depends_on:
+      - supplier-db
+    networks:
+      - inventory-network
+
+  # ==========================================
+  # 3. INVENTORY SERVICE (DB + APP)
+  # ==========================================
+  inventory-db:
+    image: mysql:8.0
+    container_name: inventory-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: inventory_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3309:3306"
+    volumes:
+      - inventory_db_data:/var/lib/mysql
+    networks:
+      - inventory-network
+
+  inventory-service:
+    build: ./inventory-service
+    container_name: inventory-service
+    ports:
+      - "8083:8083"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://inventory-db:3306/inventory_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+      - APPLICATION_CLIENTS_PRODUCT_SERVICE_URL=http://product-service:8081
+    depends_on:
+      - inventory-db
+      - product-service
+    networks:
+      - inventory-network
+
+  # ==========================================
+  # 4. PURCHASE ORDER SERVICE (DB + APP)
+  # ==========================================
+  purchase-db:
+    image: mysql:8.0
+    container_name: purchase-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: purchase_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3310:3306"
+    volumes:
+      - purchase_db_data:/var/lib/mysql
+    networks:
+      - inventory-network
+
+  purchase-order-service:
+    build: ./purchase-order-service
+    container_name: purchase-order-service
+    ports:
+      - "8084:8084"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+      - SPRING_DATASOURCE_URL=jdbc:mysql://purchase-db:3306/purchase_db?createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true&useSSL=false
+      - APPLICATION_CLIENTS_PRODUCT_SERVICE_URL=http://product-service:8081
+      - APPLICATION_CLIENTS_SUPPLIER_SERVICE_URL=http://supplier-service:8082
+      - APPLICATION_CLIENTS_INVENTORY_SERVICE_URL=http://inventory-service:8083
+    depends_on:
+      - purchase-db
+      - product-service
+      - supplier-service
+      - inventory-service
+    networks:
+      - inventory-network
+
+  # ==========================================
+  # 5. FRONTEND (ANGULAR) - ¡AHORA ALINEADO!
+  # ==========================================
+  frontend:
+    build: ./front-angular
+    container_name: front-angular
+    ports:
+      - "80:80"
+    depends_on:
+      - product-service
+      - supplier-service
+      - inventory-service
+      - purchase-order-service
+    networks:
+      - inventory-network
+
+# ==========================================
+# VOLÚMENES Y REDES (AL FINAL)
+# ==========================================
+volumes:
+  product_db_data:
+  supplier_db_data:
+  inventory_db_data:
+  purchase_db_data:
+
+networks:
+  inventory-network:
+    driver: bridge
