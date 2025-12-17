@@ -1,0 +1,28 @@
+/* Badges de estado */
+.badge {
+    font-size: 0.9rem;
+    padding: 8px 12px;
+    border-radius: 20px;
+    letter-spacing: 0.5px;
+}
+
+/* Botones de acción pequeños */
+.btn-sm {
+    font-size: 0.8rem;
+    margin-top: 2px;
+}
+
+/* Detalles de la orden (items pequeños) */
+ul {
+    padding-left: 15px;
+    margin-bottom: 0;
+}
+
+li {
+    margin-bottom: 2px;
+}
+
+/* Fila de la tabla al pasar el mouse */
+tbody tr:hover {
+    background-color: #f8f9fa;
+}

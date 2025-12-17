@@ -1,0 +1,12 @@
+<div class="container mt-4" style="max-width: 500px;">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white"><h3>Crear Bodega</h3></div>
+        <div class="card-body">
+            <label>Nombre:</label>
+            <input [(ngModel)]="warehouse.name" class="form-control mb-3" placeholder="Ej: Bodega Central">
+            <label>Ubicación:</label>
+            <input [(ngModel)]="warehouse.location" class="form-control mb-3" placeholder="Ej: Quito">
+            <button (click)="saveWarehouse()" class="btn btn-success w-100">Guardar</button>
+        </div>
+    </div>
+</div>

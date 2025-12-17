@@ -1,0 +1,25 @@
+/* Sección de agregar items */
+.card-items {
+    background-color: #f1f3f5;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+label {
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: #495057;
+}
+
+/* Tabla de items agregados */
+.table-bordered th {
+    background-color: #e9ecef;
+}
+
+.total-section {
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: right;
+    margin-top: 10px;
+}

@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  # Base de datos MySQL para el servicio de productos
+  product-db:
+    image: mysql:8.0
+    container_name: product-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: product_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306" # Mapeamos al 3307 en tu PC para que no choque si tienes un MySQL local
+    volumes:
+      - product_db_data:/var/lib/mysql
+
+  # Microservicio de Productos
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - "8081:8081"
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      - product-db
+
+volumes:
+  product_db_data:

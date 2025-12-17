@@ -1,0 +1,76 @@
+/* Estilo para el título principal */
+h2 {
+    color: #343a40;
+    font-weight: 700;
+    margin-bottom: 20px;
+    border-left: 5px solid #0d6efd; /* Línea azul decorativa */
+    padding-left: 15px;
+}
+
+/* --- TABLA --- */
+.table {
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.table thead th {
+    background-color: #212529;
+    color: white;
+    border: none;
+    padding: 12px;
+}
+
+.table tbody td {
+    vertical-align: middle; /* Centra el texto verticalmente */
+    padding: 10px;
+}
+
+/* Efecto al pasar el mouse por las filas */
+.table-striped tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+/* --- FORMULARIO (TARJETA LATERAL) --- */
+.card {
+    background-color: #ffffff;
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1); /* Sombra elegante */
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px); /* Pequeño movimiento al pasar el mouse */
+}
+
+.card h4 {
+    color: #0d6efd;
+    font-weight: 600;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Inputs del formulario */
+.form-control {
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    padding: 10px;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.25); /* Resplandor azul al escribir */
+    border-color: #86b7fe;
+}
+
+/* Botón de Guardar */
+.btn-primary {
+    padding: 10px;
+    font-weight: 600;
+    border-radius: 6px;
+    background-color: #0d6efd;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0b5ed7;
+}

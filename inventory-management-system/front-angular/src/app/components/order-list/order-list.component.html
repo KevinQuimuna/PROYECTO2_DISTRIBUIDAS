@@ -1,0 +1,48 @@
+<div class="container mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Historial de Órdenes ({{ orders.length }})</h2>
+        <a routerLink="/create-order" class="btn btn-primary">+ Nueva Orden</a>
+    </div>
+
+    <button (click)="loadOrders()" class="btn btn-sm btn-secondary mb-3">
+        <i class="bi bi-arrow-clockwise"></i> Recargar Lista
+    </button>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Estado</th>
+                    <th>Total</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngIf="orders.length === 0">
+                    <td colspan="5" class="text-center text-danger">
+                        Angular dice que hay 0 órdenes, pero la consola dice que hay 9.
+                    </td>
+                </tr>
+
+                <tr *ngFor="let o of orders">
+                    <td>{{ o.id }}</td>
+                    <td>
+                        <span class="badge" 
+                              [ngClass]="{'bg-warning': o.status=='PENDING', 'bg-primary': o.status=='APPROVED', 'bg-success': o.status=='RECEIVED'}">
+                            {{ o.status }}
+                        </span>
+                    </td>
+                    <td>{{ o.totalAmount | currency }}</td>
+                    <td>{{ o.createdAt | date:'short' }}</td>
+                    <td>
+                        <button *ngIf="o.status === 'PENDING'" (click)="approveOrder(o.id)" class="btn btn-sm btn-primary me-1">Aprobar</button>
+                        <button *ngIf="o.status === 'APPROVED'" (click)="receiveOrder(o.id)" class="btn btn-sm btn-success">Recibir</button>
+                        <span *ngIf="o.status === 'RECEIVED'">✅</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

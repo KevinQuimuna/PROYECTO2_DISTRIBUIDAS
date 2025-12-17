@@ -1,0 +1,26 @@
+/* Efecto hover en las tarjetas del dashboard */
+.card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    height: 100%; /* Para que todas tengan la misma altura */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.card-text {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* Quitar el subrayado de los enlaces dentro de las cards */
+a {
+    text-decoration: none;
+}

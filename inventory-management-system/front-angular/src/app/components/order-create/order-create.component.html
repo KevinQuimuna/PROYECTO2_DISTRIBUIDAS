@@ -1,0 +1,124 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-4">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">1. Datos de la Orden</h5>
+        </div>
+        <div class="card-body">
+          
+          <div class="mb-3">
+            <label class="form-label fw-bold">Proveedor:</label>
+            <select class="form-select" [(ngModel)]="selectedSupplierId">
+              <option [ngValue]="0" disabled>Seleccione un Proveedor</option>
+              <option *ngFor="let s of suppliers" [ngValue]="s.id">
+                {{ s.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-bold">Bodega de Destino:</label>
+            <select class="form-select" [(ngModel)]="selectedWarehouseId">
+              <option [ngValue]="0" disabled>Seleccione una Bodega</option>
+              <option *ngFor="let w of warehouses" [ngValue]="w.id">
+                {{ w.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Notas:</label>
+            <textarea class="form-control" [(ngModel)]="notes" rows="2" placeholder="Opcional"></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="d-grid gap-2 mt-3">
+        <button (click)="createOrder()" 
+                class="btn btn-success btn-lg" 
+                [disabled]="items.length === 0 || selectedSupplierId === 0 || selectedWarehouseId === 0">
+          <i class="bi bi-check-circle"></i> Generar Orden
+        </button>
+        <a routerLink="/orders" class="btn btn-outline-secondary">Cancelar</a>
+      </div>
+    </div>
+
+    <div class="col-md-8">
+      
+      <div class="card shadow-sm mb-4">
+        <div class="card-header bg-secondary text-white">
+          <h5 class="mb-0">2. Agregar Productos</h5>
+        </div>
+        <div class="card-body">
+          <div class="row align-items-end">
+            <div class="col-md-6">
+              <label class="form-label">Producto:</label>
+              <select class="form-select" [(ngModel)]="selectedProductId">
+                <option [ngValue]="0" disabled>Buscar producto...</option>
+                <option *ngFor="let p of products" [ngValue]="p.id">
+                  {{ p.sku }} - {{ p.name }} (Stock: {{p.stock}})
+                </option>
+              </select>
+            </div>
+            <div class="col-md-3">
+              <label class="form-label">Cantidad:</label>
+              <input type="number" class="form-control" [(ngModel)]="quantity" min="1">
+            </div>
+            <div class="col-md-3">
+              <button class="btn btn-primary w-100" (click)="addItem()" 
+                      [disabled]="selectedProductId === 0 || quantity <= 0">
+                + Agregar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm">
+        <div class="card-body p-0">
+          <table class="table table-striped mb-0">
+            <thead class="table-light">
+              <tr>
+                <th>SKU</th>
+                <th>Producto</th>
+                <th>Cant.</th>
+                <th>Precio Unit.</th>
+                <th>Subtotal</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of items; let i = index">
+                <td>{{ item.sku }}</td>
+                <td>
+                    {{ getProductName(item.productId) }}
+                </td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.unitPrice | currency }}</td>
+                <td>{{ (item.quantity * item.unitPrice) | currency }}</td>
+                <td>
+                  <button class="btn btn-sm btn-danger" (click)="removeItem(i)">X</button>
+                </td>
+              </tr>
+              <tr *ngIf="items.length === 0">
+                <td colspan="6" class="text-center py-4 text-muted">
+                  No hay productos en la orden. Agrega uno arriba.
+                </td>
+              </tr>
+            </tbody>
+            <tfoot class="table-group-divider" *ngIf="items.length > 0">
+              <tr>
+                <td colspan="4" class="text-end fw-bold fs-5">Total Orden:</td>
+                <td class="fw-bold fs-5 text-primary">{{ calculateTotal() | currency }}</td>
+                <td></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

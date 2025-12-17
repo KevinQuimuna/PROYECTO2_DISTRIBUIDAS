@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-md-8">
+        <h2>Proveedores</h2>
+        <table class="table table-bordered">
+            <thead class="table-dark"><tr><th>Nombre</th><th>Email</th><th>Teléfono</th></tr></thead>
+            <tbody>
+                <tr *ngFor="let s of filteredSuppliers">
+                    <td>{{s.name}}</td><td>{{s.email}}</td><td>{{s.phoneNumber}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h4>Nuevo Proveedor</h4>
+            <input [(ngModel)]="newSupplier.name" class="form-control mb-2" placeholder="Nombre">
+            <input [(ngModel)]="newSupplier.email" class="form-control mb-2" placeholder="Email">
+            <input [(ngModel)]="newSupplier.phoneNumber" class="form-control mb-2" placeholder="Teléfono">
+            <button (click)="saveSupplier()" class="btn btn-primary w-100">Guardar</button>
+        </div>
+    </div>
+</div>
